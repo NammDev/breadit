@@ -5,10 +5,12 @@ import { FC, useState } from 'react'
 import { Button } from '../ui/button'
 import { Icons } from './Icons'
 import { useSession, signIn, signOut } from 'next-auth/react'
+import { useToast } from '@/hooks/use-toast'
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
+  const { toast } = useToast()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const loginWithGoogle = async () => {
@@ -17,6 +19,11 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
       await signIn('google')
     } catch (error) {
       // toast notification
+      toast({
+        title: 'Error',
+        description: 'There was an error logging in with Google',
+        // variant: 'destructive',
+      })
     } finally {
       setIsLoading(false)
     }
