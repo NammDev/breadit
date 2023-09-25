@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Icons } from './Icons'
+import UserAuthForm from './UserAuthForm'
 
 const SignIn = () => {
   return (
@@ -12,7 +13,7 @@ const SignIn = () => {
           Privacy Policy.
         </p>
       </div>
-      {/* <UserAuthForm /> */}
+      <UserAuthForm />
       <p className='px-8 text-center text-sm text-muted-foreground'>
         New to Breaddit?{' '}
         <Link href='/sign-up' className='hover:text-zinc-800 text-sm underline underline-offset-4'>
