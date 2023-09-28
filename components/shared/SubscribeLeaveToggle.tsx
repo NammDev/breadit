@@ -58,9 +58,32 @@ const SubscribeLeaveToggle = ({
   })
 
   const { mutate: unsubscribe, isLoading: isUnsubLoading } = useMutation({
-    mutationFn: async () => {},
-    onError: () => {},
-    onSuccess(data, variables, context) {},
+    mutationFn: async () => {
+      const payload: SubscribeToSubredditPayload = {
+        subredditId,
+      }
+
+      const { data } = await axios.post('/api/subreddit/unsubscribe', payload)
+      return data as string
+    },
+    onError: (err: AxiosError) => {
+      toast({
+        title: 'Error',
+        description: err.response?.data as string,
+        variant: 'destructive',
+      })
+    },
+    onSuccess: () => {
+      startTransition(() => {
+        // Refresh the current route and fetch new data from the server without
+        // losing client-side browser or React state.
+        router.refresh()
+      })
+      toast({
+        title: 'Unsubscribed!',
+        description: `You are now unsubscribed from/${subredditName}`,
+      })
+    },
   })
 
   return isSubscribed ? (
