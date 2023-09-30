@@ -11,8 +11,8 @@ import { toast } from '@/hooks/use-toast'
 import { PostCreationRequest, PostValidator } from '@/lib/validators/post'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
-
 import '@/styles/editor.css'
+import { uploadFiles } from '@/lib/uploadthing'
 
 type FormData = z.infer<typeof PostValidator>
 
@@ -99,8 +99,8 @@ export const Editor: React.FC<EditorProps> = ({ subredditId }) => {
               uploader: {
                 async uploadByFile(file: File) {
                   // upload to uploadthing
-                  const [res] = await uploadFiles([file], 'imageUploader')
-
+                  const files = [file]
+                  const [res] = await uploadFiles({ files, endpoint: 'imageUploader' })
                   return {
                     success: 1,
                     file: {
