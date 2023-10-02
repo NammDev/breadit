@@ -1,6 +1,12 @@
 import { formatTimeToNow } from '@/lib/utils'
 import { Post, User, Vote } from '@prisma/client'
-import React from 'react'
+import React, { useRef } from 'react'
+import EditorOutput from './EditorOutput'
+import Link from 'next/link'
+import { MessageSquare } from 'lucide-react'
+import PostVoteClient from '../post-vote/PostVoteClient'
+
+type PartialVote = Pick<Vote, 'type'>
 
 interface PostProps {
   post: Post & {
@@ -20,10 +26,17 @@ const Post = ({
   subredditName,
   commentAmt,
 }: PostProps) => {
+  const pRef = useRef<HTMLParagraphElement>(null)
+
   return (
     <div className='rouded-md bg-white shadow'>
       <div className='px-6 py-4 flex justify-between'>
         {/* TODO: PostVotes */}
+        <PostVoteClient
+          postId={post.id}
+          initialVotesAmt={_votesAmt}
+          initialVote={_currentVote?.type}
+        />
 
         <div className='w-0 flex-1'>
           <div className='max-h-40 mt-1 text-xs text-gray-500'>
@@ -41,7 +54,28 @@ const Post = ({
             <span>Posted by u/{post.author.username}</span>{' '}
             {formatTimeToNow(new Date(post.createdAt))}
           </div>
+
+          <Link href={`/r/${subredditName}/post/${post.id}`}>
+            <h1 className='text-lg font-semibold py-2 leading-6 text-gray-900'>{post.title}</h1>
+          </Link>
+
+          <div className='relative text-sm max-h-40 w-full overflow-clip' ref={pRef}>
+            <EditorOutput content={post.content} />
+            {pRef.current?.clientHeight === 160 ? (
+              // blur bottom if content is too long
+              <div className='absolute bottom-0 left-0 h-24 w-full bg-gradient-to-t from-white to-transparent'></div>
+            ) : null}
+          </div>
         </div>
+      </div>
+
+      <div className='bg-gray-50 z-20 text-sm px-4 py-4 sm:px-6'>
+        <Link
+          href={`/r/${subredditName}/post/${post.id}`}
+          className='w-fit flex items-center gap-2'
+        >
+          <MessageSquare className='h-4 w-4' /> {commentAmt} comments
+        </Link>
       </div>
     </div>
   )

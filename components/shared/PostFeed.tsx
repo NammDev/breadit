@@ -64,11 +64,26 @@ const PostFeed = ({ initialPosts, subredditName }: PostFeedProps) => {
           // Add a ref to the last post in the list
           return (
             <li key={post.id} ref={ref}>
-              <Post post={post} subredditName={post.subreddit.name} />
+              <Post
+                commentAmt={post.comments.length}
+                post={post}
+                subredditName={post.subreddit.name}
+                votesAmt={votesAmount}
+                currentVote={currentVote}
+              />
             </li>
           )
         } else {
-          return <Post post={post} subredditName={post.subreddit.name} />
+          return (
+            <Post
+              key={post.id}
+              commentAmt={post.comments.length}
+              post={post}
+              subredditName={post.subreddit.name}
+              votesAmt={votesAmount}
+              currentVote={currentVote}
+            />
+          )
         }
       })}
     </ul>
