@@ -4,6 +4,7 @@ import { INFINITE_SCROLL_PAGINATION_RESULTS } from '@/config'
 import React from 'react'
 import { notFound } from 'next/navigation'
 import MiniCreatePost from '@/components/shared/MiniCreatePost'
+import PostFeed from '@/components/shared/PostFeed'
 
 interface PageProps {
   params: {
@@ -40,7 +41,7 @@ const Page = async ({ params }: PageProps) => {
     <>
       <h1 className='font-bold text-3xl md:text-4xl h-14'>r/{subreddit.name}</h1>
       <MiniCreatePost session={session} />
-      {/* <PostFeed initialPosts={subreddit.posts} subredditName={subreddit.name} /> */}
+      <PostFeed initialPosts={subreddit.posts} subredditName={subreddit.name} />
     </>
   )
 }
