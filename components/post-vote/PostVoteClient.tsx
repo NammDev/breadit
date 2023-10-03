@@ -57,6 +57,8 @@ const PostVoteClient = ({ postId, initialVotesAmt, initialVote }: PostVoteClient
         variant: 'destructive',
       })
     },
+    // This function will fire before the mutation function is fired and is passed the same variables the mutation function would receive
+    // Useful to perform optimistic updates to a resource in hopes that the mutation succeeds
     onMutate: (type: VoteType) => {
       if (currentVote === type) {
         // User is voting the same way again, so remove their vote

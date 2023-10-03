@@ -30,7 +30,7 @@ const PostFeed = ({ initialPosts, subredditName }: PostFeedProps) => {
     ['infiniti-query'],
     async ({ pageParam = 1 }) => {
       const query =
-        `/api/post?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}` +
+        `/api/posts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}` +
         (!!subredditName ? `&subredditName=${subredditName}` : '')
       const { data } = await axios.get(query)
       return data as ExtendedPost[]
@@ -42,6 +42,12 @@ const PostFeed = ({ initialPosts, subredditName }: PostFeedProps) => {
       initialData: { pages: [initialPosts], pageParams: [1] },
     }
   )
+
+  useEffect(() => {
+    if (entry?.isIntersecting) {
+      fetchNextPage() // Load more posts when the last post comes into view
+    }
+  }, [entry, fetchNextPage])
 
   const posts = data?.pages.flatMap((page) => page) ?? initialPosts
 
@@ -86,6 +92,12 @@ const PostFeed = ({ initialPosts, subredditName }: PostFeedProps) => {
           )
         }
       })}
+
+      {isFetchingNextPage && (
+        <li className='flex justify-center'>
+          <Loader2 className='w-6 h-6 text-zinc-500 animate-spin' />
+        </li>
+      )}
     </ul>
   )
 }
