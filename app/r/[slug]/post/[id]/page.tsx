@@ -67,7 +67,7 @@ const page = async ({ params }: DetailPostProps) => {
 
           <Suspense fallback={<Loader2 className='h-5 w-5 animate-spin text-zinc-500' />}>
             {/* @ts-expect-error Server Component */}
-            {/* <CommentsSection postId={post?.id ?? cachedPost.id} /> */}
+            <CommentsSection postId={post?.id ?? cachedPost.id} />
           </Suspense>
         </div>
       </div>
