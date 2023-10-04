@@ -27,7 +27,7 @@ const PostFeed: FC<PostFeedProps> = ({ initialPosts, subredditName }) => {
     ['infinite-query'],
     async ({ pageParam = 1 }) => {
       const query =
-        `/api/post?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}` +
+        `/api/posts?limit=${INFINITE_SCROLL_PAGINATION_RESULTS}&page=${pageParam}` +
         (!!subredditName ? `&subredditName=${subredditName}` : '')
 
       const { data } = await axios.get(query)
