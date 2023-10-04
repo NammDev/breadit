@@ -1,9 +1,11 @@
+'use client'
+
 import { formatTimeToNow } from '@/lib/utils'
 import { Post, User, Vote } from '@prisma/client'
-import React, { useRef } from 'react'
-import EditorOutput from './EditorOutput'
-import Link from 'next/link'
 import { MessageSquare } from 'lucide-react'
+import Link from 'next/link'
+import { FC, useRef } from 'react'
+import EditorOutput from './EditorOutput'
 import PostVoteClient from '../post-vote/PostVoteClient'
 
 type PartialVote = Pick<Vote, 'type'>
@@ -19,19 +21,18 @@ interface PostProps {
   commentAmt: number
 }
 
-const Post = ({
+const Post: FC<PostProps> = ({
   post,
   votesAmt: _votesAmt,
   currentVote: _currentVote,
   subredditName,
   commentAmt,
-}: PostProps) => {
+}) => {
   const pRef = useRef<HTMLParagraphElement>(null)
 
   return (
-    <div className='rouded-md bg-white shadow'>
+    <div className='rounded-md bg-white shadow'>
       <div className='px-6 py-4 flex justify-between'>
-        {/* TODO: PostVotes */}
         <PostVoteClient
           postId={post.id}
           initialVotesAmt={_votesAmt}
@@ -43,8 +44,8 @@ const Post = ({
             {subredditName ? (
               <>
                 <a
-                  href={`r/${subredditName}`}
                   className='underline text-zinc-900 text-sm underline-offset-2'
+                  href={`/r/${subredditName}`}
                 >
                   r/{subredditName}
                 </a>
@@ -54,10 +55,9 @@ const Post = ({
             <span>Posted by u/{post.author.username}</span>{' '}
             {formatTimeToNow(new Date(post.createdAt))}
           </div>
-
-          <Link href={`/r/${subredditName}/post/${post.id}`}>
+          <a href={`/r/${subredditName}/post/${post.id}`}>
             <h1 className='text-lg font-semibold py-2 leading-6 text-gray-900'>{post.title}</h1>
-          </Link>
+          </a>
 
           <div className='relative text-sm max-h-40 w-full overflow-clip' ref={pRef}>
             <EditorOutput content={post.content} />
@@ -80,5 +80,4 @@ const Post = ({
     </div>
   )
 }
-
 export default Post
