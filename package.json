@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@editorjs/code": "^2.8.0",
@@ -41,6 +42,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
+    "debug": "^4.3.4",
     "editorjs-react-renderer": "^3.5.1",
     "lodash.debounce": "^4.0.8",
     "lucide-react": "^0.279.0",
